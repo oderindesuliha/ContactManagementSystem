@@ -16,5 +16,9 @@ public interface ContactRepository extends MongoRepository<Contact,String> {
     List<Contact> findByFirstNameAndLastName(String firstName, String lastName);
     List<Contact> findByFirstNameAndLastNameAndPerson(String firstName, String lastName, Person person);
     long countContactByDateCreated(LocalDate dateCreated);
+
+    boolean existsById(Long id);
+
+    Optional<Contact> findById(Long id);
 }
 
