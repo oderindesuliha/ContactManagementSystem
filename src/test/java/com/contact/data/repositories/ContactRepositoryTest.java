@@ -38,7 +38,7 @@ public class ContactRepositoryTest {
         assertEquals(1, contactRepository.count());
         assertNotNull(savedContact);
     }
-    
+
     @Test
     public void testToSaveContact_findById() {
         Contact contact = new Contact();
@@ -80,7 +80,6 @@ public class ContactRepositoryTest {
         List<Contact> foundContact = contactRepository.findByFirstNameAndLastName("Bola", "Tinubu");
         assertEquals(1, foundContact.size());
         assertTrue(foundContact.contains(contact1));
-
     }
 
     @Test
@@ -107,7 +106,7 @@ public class ContactRepositoryTest {
     }
 
     @Test
-    public void testToSaveContact_findByFirstNameAndLastName_returnEmpty(){
+    public void testToSaveContact_findByFirstNameAndLastName_returnEmpty() {
         Contact contact2 = new Contact();
         contact2.setFirstName("Yewande");
         contact2.setLastName("Tinubu");
@@ -121,7 +120,7 @@ public class ContactRepositoryTest {
     }
 
     @Test
-    public void testToSaveContact_findByPhoneNumber_returnNumber(){
+    public void testToSaveContact_findByPhoneNumber_returnNumber() {
         Contact contact1 = new Contact();
         contact1.setFirstName("Yewande");
         contact1.setLastName("Tinubu");
@@ -142,11 +141,10 @@ public class ContactRepositoryTest {
         Optional<Contact> foundContact = contactRepository.findByPhoneNumber("09090563473");
         assertTrue(foundContact.isPresent());
         assertEquals("09090563473", foundContact.get().getPhoneNumber());
-
     }
 
     @Test
-    public void testToFindContact_findByPerson_returnCount(){
+    public void testToFindContact_findByPerson_returnCount() {
         Person person1 = new Person();
         person1.setFirstName("Bola");
         personRepository.save(person1);
@@ -168,7 +166,7 @@ public class ContactRepositoryTest {
         Contact contact1 = new Contact();
         contact1.setFirstName("Ayo");
         contact1.setPhoneNumber("07081288183");
-        contact1.setDateCreated(LocalDate.of(2025, 6, 5));
+        contact1.setDateCreated(LocalDate.of(2025, 6, 6));
         contact1.setPerson(person1);
         contactRepository.save(contact1);
 
@@ -187,7 +185,7 @@ public class ContactRepositoryTest {
     }
 
     @Test
-    public void testToSaveContacts_findByDateCreated_returnCount(){
+    public void testToSaveContacts_findByDateCreated_returnCount() {
         Contact contact = new Contact();
         contact.setFirstName("Yewande");
         contact.setLastName("Tinubu");
@@ -209,9 +207,5 @@ public class ContactRepositoryTest {
 
         long numbersSavedOnThe6thOfJune = contactRepository.countContactByDateCreated(LocalDate.of(2025, 6, 6));
         assertEquals(1, numbersSavedOnThe6thOfJune);
-
-
-
     }
-
 }
