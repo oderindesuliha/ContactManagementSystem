@@ -1,25 +1,23 @@
 package com.contact.data.models;
 
-import jakarta.persistence.*;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.time.LocalDate;
 
 @Data
-@Entity
-@Table(name ="contacts")
+
 public class Contact {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
     private String phoneNumber;
     private LocalDate dateCreated;
-    @ManyToOne
-    @JoinColumn(name = "personId")
+    @DBRef
     private Person person;
 }

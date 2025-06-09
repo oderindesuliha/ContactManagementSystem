@@ -1,15 +1,14 @@
 package com.contact.data.models;
 
-import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.UUID;
 
 @Data
-@Entity
+@Document
 public class Person {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long personId;
     private String firstName;
     private String lastName;

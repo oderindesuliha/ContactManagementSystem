@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ContactRepositoryTest {
     @Autowired
     private ContactRepository contactRepository;
+    @Autowired
     private PersonRepository personRepository;
 
     @BeforeEach
@@ -178,10 +179,39 @@ public class ContactRepositoryTest {
         contact2.setPerson(person2);
         contactRepository.save(contact2);
 
-        contactRepository.findByPerson(person1);
+        List<Contact> getContacts = contactRepository.findByPerson(person1);
+        assertEquals(1, getContacts.size());
 
+        List<Contact> getPerson2Contacts = contactRepository.findByPerson(person2);
+        assertEquals(2, getPerson2Contacts.size());
+    }
+
+    @Test
+    public void testToSaveContacts_findByDateCreated_returnCount(){
+        Contact contact = new Contact();
+        contact.setFirstName("Yewande");
+        contact.setLastName("Tinubu");
+        contact.setPhoneNumber("08081828183");
+        contact.setDateCreated(LocalDate.of(2025, 6, 5));
+        contactRepository.save(contact);
+
+        Contact contact1 = new Contact();
+        contact1.setFirstName("Ayo");
+        contact1.setPhoneNumber("07081288183");
+        contact1.setDateCreated(LocalDate.of(2025, 6, 6));
+        contactRepository.save(contact1);
+
+        Contact contact2 = new Contact();
+        contact2.setFirstName("Tunde");
+        contact2.setPhoneNumber("07081828183");
+        contact2.setDateCreated(LocalDate.of(2025, 6, 5));
+        contactRepository.save(contact2);
+
+        long numbersSavedOnThe6thOfJune = contactRepository.countContactByDateCreated(LocalDate.of(2025, 6, 6));
+        assertEquals(1, numbersSavedOnThe6thOfJune);
 
 
 
     }
+
 }
