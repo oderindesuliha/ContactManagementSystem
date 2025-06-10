@@ -7,12 +7,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document
-public class Person {
+public class User {
     @Id
-    private Long personId;
+    private String userId;
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
     private String phoneNumber;
+    private String password;
 }
