@@ -20,4 +20,6 @@ public class Contact {
     private String email;
     private String phoneNumber;
     private LocalDate dateCreated;
-    }
+    @DBRef
+    private User user;
+}

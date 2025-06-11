@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class OtpResponse {
-    private String validNumber;
+    private boolean validPhoneNumber;
     private String message;
 }
