@@ -2,7 +2,6 @@ package com.contact.services;
 
 import com.contact.data.repositories.Users;
 import com.contact.dtos.requests.UserRegisterRequest;
-import com.contact.dtos.responses.UserRegisterResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ public class UserServiceImplTest {
     @BeforeEach
     public void setUp() {
         users.deleteAll();
+
     }
 
     @Test
@@ -29,14 +29,8 @@ public class UserServiceImplTest {
         registerRequest.setLastName("Oyetola");
         registerRequest.setEmail("b.oyetola@gmail.com");
         registerRequest.setPhoneNumber("09076763421");
-//        otpRequest.
-        UserRegisterResponse registerResponse = userService.register(registerRequest);
-//        assertNotNull(registerResponse);
-        assertNotNull(registerResponse.getOtp());
+
+        userService.userRegister(registerRequest);
         assertEquals(1, users.count());
-
-
-
     }
-
 }

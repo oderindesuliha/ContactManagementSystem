@@ -52,8 +52,9 @@ public class UserValidations {
             }
         }
         else if (number.startsWith("+234")) {
-            String checkphoneNumber = number.replaceAll("\\s", "").trim();
-            if (!checkphoneNumber.matches("^\\+234(70|80|81|90|91)[0-9]{8}$")) {
+            String checkPhoneNumber = number.replaceAll("\\s", "").trim();
+
+            if (!checkPhoneNumber.matches("^\\+234(70|80|81|90|91)[0-9]{8}$")) {
                 throw new UserException("Please enter a valid Nigerian phone number");
             }
         } else {

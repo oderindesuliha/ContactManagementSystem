@@ -8,8 +8,8 @@ import com.contact.dtos.responses.UserRegisterResponse;
 import com.contact.dtos.responses.VerifyOtpResponse;
 
 public interface UserService {
-    UserRegisterResponse register(UserRegisterRequest userRegisterRequest);
-    UserLoginResponse login(UserLoginRequest userLoginRequest);
+    UserRegisterResponse userRegister(UserRegisterRequest userRegisterRequest);
+    UserLoginResponse userLogin(UserLoginRequest userLoginRequest);
     VerifyOtpResponse verifyOtp(VerifyOtpRequest verifyOtpRequest);
 
 }

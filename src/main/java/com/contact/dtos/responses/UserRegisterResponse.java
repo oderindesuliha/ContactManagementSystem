@@ -1,8 +1,10 @@
 package com.contact.dtos.responses;
 
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@Document
 public class UserRegisterResponse {
-    private String otp;
+    private String message;
 }
