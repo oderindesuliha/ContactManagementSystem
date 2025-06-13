@@ -12,9 +12,13 @@ import com.contact.dtos.responses.UserRegisterResponse;
 import com.contact.dtos.responses.VerifyOtpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+<<<<<<< HEAD
 import validations.UserValidation;
 
 import java.util.Random;
+=======
+import validations.UserValidations;
+>>>>>>> 1224300d58742ec5f588f63f7945e2742cbb368b
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private Users users;
 
     @Override
+<<<<<<< HEAD
     public UserRegisterResponse register(UserRegisterRequest request) {
         UserRegisterResponse response = new UserRegisterResponse();
 
@@ -55,10 +60,30 @@ public class UserServiceImpl implements UserService {
         users.save(user);
 
         response.setMessage("User registered successfully");
+=======
+    public UserRegisterResponse userRegister(UserRegisterRequest userRegisterRequest) {
+
+        UserValidations.validateUser(userRegisterRequest);
+
+
+        User user = new User();
+        user.setFirstName(userRegisterRequest.getFirstName());
+        user.setLastName(userRegisterRequest.getLastName());
+        user.setEmail(userRegisterRequest.getEmail());
+        user.setPhoneNumber(userRegisterRequest.getPhoneNumber());
+
+        users.save(user);
+
+        UserRegisterResponse response = new UserRegisterResponse();
+        response.setSucc(true);
+        response.setMessage("User registered successfully");
+        response.setEmail(user.getEmail());
+>>>>>>> 1224300d58742ec5f588f63f7945e2742cbb368b
         return response;
     }
 
     @Override
+<<<<<<< HEAD
     public UserLoginResponse login(UserLoginRequest request) {
         UserLoginResponse response = new UserLoginResponse();
 
@@ -75,6 +100,10 @@ public class UserServiceImpl implements UserService {
 
         response.setMessage("Login successful");
         return response;
+=======
+    public UserLoginResponse userLogin(UserLoginRequest userLoginRequest) {
+        return null;
+>>>>>>> 1224300d58742ec5f588f63f7945e2742cbb368b
     }
 
     @Override
