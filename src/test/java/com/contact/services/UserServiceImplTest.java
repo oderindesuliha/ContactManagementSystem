@@ -1,6 +1,14 @@
+package com.contact.services;
 
+import com.contact.data.models.Otp;
+import com.contact.data.models.User;
+import com.contact.data.repositories.Otps;
 import com.contact.data.repositories.Users;
 import com.contact.dtos.requests.UserRegisterRequest;
+import com.contact.dtos.requests.VerifyOtpRequest;
+import com.contact.dtos.responses.UserRegisterResponse;
+import com.contact.dtos.responses.VerifyOtpResponse;
+import com.contact.exceptions.UserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,209 +16,190 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//@SpringBootTest
-//public class UserServiceImplTest {
-//    @Autowired
-//    private UserService userService;
-//    @Autowired
-//    private Users users;
-//
-//    @BeforeEach
-//    public void setUp() {
-//        users.deleteAll();
-//    }
-//
-//    @Test
-//    public void testGenerateOtp_WithValidPhoneNumber_Successful() {
-//        OtpRequest request = new OtpRequest();
-//        request.setPhoneNumber("09076763421");
-//
-//        OtpResponse response = userService.generateOtp(request);
-//
-//        assertTrue(response.isValidPhoneNumber());
-//        assertEquals("OTP generated successfully", response.getMessage());
-//        assertEquals(1, users.count());
-//
-//        User user = users.findByPhoneNumber("09076763421");
-//        assertNotNull(user);
-//        assertNotNull(user.getOtpCode());
-//        assertFalse(user.isVerified());
-//    }
-//
-//    @Test
-//    public void testGenerateOtp_WithRegisteredPhoneNumber_Failed() {
-//        // First generate OTP and register user
-//        OtpRequest initialRequest = new OtpRequest();
-//        initialRequest.setPhoneNumber("09076763421");
-//        OtpResponse initialResponse = userService.generateOtp(initialRequest);
-//        User user = users.findByPhoneNumber("09076763421");
-//
-//        // Register user with the generated OTP
-//        UserRegisterRequest registerRequest = new UserRegisterRequest();
-//        registerRequest.setFirstName("Bola");
-//        registerRequest.setLastName("Oyetola");
-//        registerRequest.setEmail("b.oyetola@gmail.com");
-//        registerRequest.setPhoneNumber("09076763421");
-//        registerRequest.setOtpCode(user.getOtpCode());
-//        userService.register(registerRequest);
-//
-//        // Try to generate OTP for same number
-//        OtpRequest request = new OtpRequest();
-//        request.setPhoneNumber("09076763421");
-//        OtpResponse response = userService.generateOtp(request);
-//
-//        assertFalse(response.isValidPhoneNumber());
-//        assertEquals("Phone number already registered", response.getMessage());
-//    }
-//
-//    @Test
-//    public void testRegisterUser_WithValidOtp_Successful() {
-//        // Generate OTP first
-//        OtpRequest otpRequest = new OtpRequest();
-//        otpRequest.setPhoneNumber("09076763421");
-//        userService.generateOtp(otpRequest);
-//        User user = users.findByPhoneNumber("09076763421");
-//        String generatedOtp = user.getOtpCode();
-//
-//        UserRegisterRequest request = new UserRegisterRequest();
-//        request.setFirstName("Bola");
-//        request.setLastName("Oyetola");
-//        request.setEmail("b.oyetola@gmail.com");
-//        request.setPhoneNumber("09076763421");
-//        request.setOtpCode(generatedOtp);
-//
-//        UserRegisterResponse response = userService.register(request);
-//
-//        assertEquals("User registered successfully", response.getMessage());
-//        User registeredUser = users.findByPhoneNumber("09076763421");
-//        assertNotNull(registeredUser);
-//        assertEquals("Bola", registeredUser.getFirstName());
-//        assertEquals("Oyetola", registeredUser.getLastName());
-//        assertEquals("b.oyetola@gmail.com", registeredUser.getEmail());
-//        assertTrue(registeredUser.isVerified());
-//    }
-//
-//    @Test
-//    public void testRegisterUser_WithInvalidOtp_Failed() {
-//        // Generate OTP first
-//        OtpRequest otpRequest = new OtpRequest();
-//        otpRequest.setPhoneNumber("09076763421");
-//        userService.generateOtp(otpRequest);
-//
-//        UserRegisterRequest request = new UserRegisterRequest();
-//        request.setFirstName("Bola");
-//        request.setLastName("Oyetola");
-//        request.setEmail("b.oyetola@gmail.com");
-//        request.setPhoneNumber("09076763421");
-//        request.setOtpCode("invalid_otp");
-//
-//        UserRegisterResponse response = userService.register(request);
-//
-//        assertEquals("Invalid or already used OTP", response.getMessage());
-//        User user = users.findByPhoneNumber("09076763421");
-//        assertFalse(user.isVerified());
-//    }
-//
-//    @Test
-//    public void testRegisterUser_WithDuplicateEmail_Failed() {
-//        // Register first user
-//        registerUserWithOtp("09076763421", "b.oyetola@gmail.com");
-//
-//        // Try to register second user with same email
-//        OtpRequest otpRequest = new OtpRequest();
-//        otpRequest.setPhoneNumber("08012345678");
-//        userService.generateOtp(otpRequest);
-//        User secondUser = users.findByPhoneNumber("08012345678");
-//
-//        UserRegisterRequest request = new UserRegisterRequest();
-//        request.setFirstName("John");
-//        request.setLastName("Doe");
-//        request.setEmail("b.oyetola@gmail.com"); // Same email
-//        request.setPhoneNumber("08012345678");
-//        request.setOtpCode(secondUser.getOtpCode());
-//
-//        UserRegisterResponse response = userService.register(request);
-//
-//        assertEquals("Email already exists", response.getMessage());
-//    }
-//
-//    @Test
-//    public void testLoginUser_WithValidCredentials_Successful() {
-//        // Register user first
-//        String email = "b.oyetola@gmail.com";
-//        String password = "password123";
-//        User registeredUser = registerUserWithOtp("09076763421", email);
-//        registeredUser.setPassword(password);
-//        users.save(registeredUser);
-//
-//        UserLoginRequest request = new UserLoginRequest();
-//        request.setEmail(email);
-//        request.setPassword(password);
-//
-//        UserLoginResponse response = userService.login(request);
-//
-//        assertEquals("Login successful", response.getMessage());
-//    }
-//
-//    @Test
-//    public void testLoginUser_WithInvalidCredentials_Failed() {
-//        // Register user first
-//        String email = "b.oyetola@gmail.com";
-//        User registeredUser = registerUserWithOtp("09076763421", email);
-//        registeredUser.setPassword("password123");
-//        users.save(registeredUser);
-//
-//        UserLoginRequest request = new UserLoginRequest();
-//        request.setEmail(email);
-//        request.setPassword("wrong_password");
-//
-//        UserLoginResponse response = userService.login(request);
-//
-//        assertEquals("Invalid email, password, or unverified account", response.getMessage());
-//    }
-//
-//    // Helper method to register a user with OTP
-//    private User registerUserWithOtp(String phoneNumber, String email) {
-//        OtpRequest otpRequest = new OtpRequest();
-//        otpRequest.setPhoneNumber(phoneNumber);
-//        userService.generateOtp(otpRequest);
-//        User user = users.findByPhoneNumber(phoneNumber);
-//
-//        UserRegisterRequest registerRequest = new UserRegisterRequest();
-//        registerRequest.setFirstName("Bola");
-//        registerRequest.setLastName("Oyetola");
-//        registerRequest.setEmail(email);
-//        registerRequest.setPhoneNumber(phoneNumber);
-//        registerRequest.setOtpCode(user.getOtpCode());
-//        userService.register(registerRequest);
-//
-//        return users.findByPhoneNumber(phoneNumber);
-//    }
-//}
+@SpringBootTest
+public class UserServiceImplTest {
 
-//        package com.contact.services;
-//
-//public class UserServiceImplTest {
-//    @Autowired
-//    private UserService userService;
-//    @Autowired
-//    private Users users;
-//
-//    @BeforeEach
-//    public void setUp() {
-//        users.deleteAll();
-//
-//    }
-//
-//    @Test
-//    public void testRegisterUser_RegistrationIsSuccessful() {
-//        UserRegisterRequest registerRequest = new UserRegisterRequest();
-//        registerRequest.setFirstName("Bola");
-//        registerRequest.setLastName("Oyetola");
-//        registerRequest.setEmail("b.oyetola@gmail.com");
-//        registerRequest.setPhoneNumber("09076763421");
-//
-//        userService.userRegister(registerRequest);
-//        assertEquals(1, users.count());
-//    }
-//}
+    @Autowired
+    private Users users;
+
+    @Autowired
+    private Otps otps;
+
+    @Autowired
+    private UserService userService;
+
+    @BeforeEach
+    void setUp() {
+        User user = new User();
+    }
+
+    @Test
+    public void testRegisterUser_RegisterationSuccessful() {
+        UserRegisterRequest request = new UserRegisterRequest();
+        request.setFirstName("Bola");
+        request.setLastName("Oyetola");
+        request.setEmail("b.oyetola@gmail.com");
+        request.setPhoneNumber("09076763421");
+
+        UserRegisterResponse response = userService.register(request);
+        assertNotNull(response);
+        assertEquals("Account created successfully...OTP has been sent for verification", response.getMessage());
+        assertNotNull(response.getUserId());
+        assertEquals(1, users.count());
+    }
+
+    @Test
+    public void testRegisterUserPhoneNumberwith_234_Registerationsuccessful() {
+        UserRegisterRequest request = new UserRegisterRequest();
+        request.setFirstName("Tola");
+        request.setLastName("Adeniyi");
+        request.setEmail("t.ade@gmail.com");
+        request.setPhoneNumber("+2349075363421");
+
+        UserRegisterResponse response = userService.register(request);
+        assertNotNull(response);
+        assertEquals("Account created successfully...OTP has been sent for verification", response.getMessage());
+        assertNotNull(response.getUserId());
+        assertEquals(1, users.count());
+    }
+
+    @Test
+    public void testToRegisterUser_GetAndVerifyOtp_VerificationSuccessful() {
+        UserRegisterRequest registerRequest = new UserRegisterRequest();
+        registerRequest.setFirstName("Bola");
+        registerRequest.setLastName("Oyetola");
+        registerRequest.setEmail("b.oyetola@gmail.com");
+        registerRequest.setPhoneNumber("09076763421");
+        userService.register(registerRequest);
+
+        String otpCode = otps.findByPhoneNumber("09076763421").getOtpCode();
+
+        VerifyOtpRequest verifyRequest = new VerifyOtpRequest();
+        verifyRequest.setPhoneNumber("09076763421");
+        verifyRequest.setOtpCode(otpCode);
+
+        VerifyOtpResponse response = userService.verifyOtp(verifyRequest);
+        assertTrue(response.isValidOtp());
+        assertEquals("OTP verified successfully", response.getMessage());
+    }
+
+    @Test
+    public void testVerifyOtp_alreadyVerified() {
+        UserRegisterRequest registerRequest = new UserRegisterRequest();
+        registerRequest.setFirstName("Bola");
+        registerRequest.setLastName("Oyetola");
+        registerRequest.setEmail("b.oyetola@gmail.com");
+        registerRequest.setPhoneNumber("09076763421");
+        userService.register(registerRequest);
+
+        String otpCode = otps.findByPhoneNumber("09076763421").getOtpCode();
+
+        VerifyOtpRequest verifyRequest = new VerifyOtpRequest();
+        verifyRequest.setPhoneNumber("09076763421");
+        verifyRequest.setOtpCode(otpCode);
+        userService.verifyOtp(verifyRequest);
+
+        VerifyOtpResponse response = userService.verifyOtp(verifyRequest);
+        assertTrue(response.isValidOtp());
+        assertEquals("User already verified", response.getMessage());
+    }
+
+    @Test
+    public void testToRegisterUser_SendOtp_ReturnCount() {
+        UserRegisterRequest registerRequest = new UserRegisterRequest();
+        registerRequest.setFirstName("Bola");
+        registerRequest.setLastName("Oyetola");
+        registerRequest.setEmail("b.oyetola@gmail.com");
+        registerRequest.setPhoneNumber("09076763421");
+        userService.register(registerRequest);
+
+        userService.sendOtp("09076763421");
+        assertEquals(2, otps.count());
+    }
+
+    @Test
+    public void testRegisterUser_duplicatePhoneNumber_throwsException() {
+        UserRegisterRequest request1 = new UserRegisterRequest();
+        request1.setFirstName("Bola");
+        request1.setLastName("Oyetola");
+        request1.setEmail("b.oyetola@gmail.com");
+        request1.setPhoneNumber("09076763421");
+        userService.register(request1);
+
+        UserRegisterRequest request2 = new UserRegisterRequest();
+        request2.setFirstName("Tola");
+        request2.setLastName("Ade");
+        request2.setEmail("t.ade@gmail.com");
+        request2.setPhoneNumber("09076763421");
+
+        assertThrows(UserException.class, () -> userService.register(request2), "User with this phone number already exists");
+    }
+
+    @Test
+    public void testRegisterUser_duplicateEmail_throwsException() {
+        UserRegisterRequest request1 = new UserRegisterRequest();
+        request1.setFirstName("Bola");
+        request1.setLastName("Oyetola");
+        request1.setEmail("b.oyetola@gmail.com");
+        request1.setPhoneNumber("09076763421");
+        userService.register(request1);
+
+        UserRegisterRequest request2 = new UserRegisterRequest();
+        request2.setFirstName("Tola");
+        request2.setLastName("Ade");
+        request2.setEmail("b.oyetola@gmail.com");
+        request2.setPhoneNumber("08123456789");
+
+        assertThrows(UserException.class, () -> userService.register(request2), "Email already in use");
+    }
+
+    @Test
+    public void testRegisterUser_invalidEmail_throwsException() {
+        UserRegisterRequest request = new UserRegisterRequest();
+        request.setFirstName("Bola");
+        request.setLastName("Oyetola");
+        request.setEmail("invalid-email");
+        request.setPhoneNumber("09076763421");
+
+        assertThrows(UserException.class, () -> userService.register(request), "Email is required.....Enter a valid email address");
+    }
+
+    @Test
+    public void testRegisterUser_invalidPhoneNumber_throwsException() {
+        UserRegisterRequest request = new UserRegisterRequest();
+        request.setFirstName("Bola");
+        request.setLastName("Oyetola");
+        request.setEmail("b.oyetola@gmail.com");
+        request.setPhoneNumber("1234567890");
+
+        assertThrows(UserException.class, () -> userService.register(request), "Phone number must start with either 0 or +234");
+    }
+
+    @Test
+    public void testToRegisterUser_VerifyOtp_invalidOtp_throwsException() {
+        UserRegisterRequest registerRequest = new UserRegisterRequest();
+        registerRequest.setFirstName("Bola");
+        registerRequest.setLastName("Oyetola");
+        registerRequest.setEmail("b.oyetola@gmail.com");
+        registerRequest.setPhoneNumber("09076763421");
+        userService.register(registerRequest);
+
+        VerifyOtpRequest verifyRequest = new VerifyOtpRequest();
+        verifyRequest.setPhoneNumber("09076763421");
+        verifyRequest.setOtpCode("999999");
+
+        VerifyOtpResponse response = userService.verifyOtp(verifyRequest);
+        assertFalse(response.isValidOtp());
+        assertEquals("Invalid OTP", response.getMessage());
+    }
+
+    @Test
+    public void testSendOtp_userNotFound_throwsException() {
+        assertThrows(UserException.class, () -> userService.sendOtp("09076763421"), "User not found");
+    }
+
+    @Test
+    public void testVerifyOtp_nullRequest_throwsException() {
+        assertThrows(UserException.class, () -> userService.verifyOtp(null), "Invalid verification");
+    }
+}

@@ -4,18 +4,17 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 
 @Data
 @Document
-public class User {
+public class Otp {
     @Id
-    private String userId;
-    private String firstName;
-    private String lastName;
-    private String email;
+    private String id;
     private String phoneNumber;
-    private boolean verified;
-
+    private String otpCode;
+    private LocalDateTime createdAt;
+    private LocalDateTime expiresAt;
+    private boolean usedOtp;
 
 }
-

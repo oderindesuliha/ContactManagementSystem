@@ -31,7 +31,7 @@ public class UserValidation {
         }
     }
 
-    private static void validatePhoneNumber(String number) {
+    public static void validatePhoneNumber(String number) {
         if (number == null || number.trim().isEmpty()) {
             throw new UserException("Phone number is required");
         }
