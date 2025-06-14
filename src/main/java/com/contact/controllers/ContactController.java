@@ -19,26 +19,14 @@
 //    }
 //
 //    @PostMapping("/{userId}")
-//    public ResponseEntity<ContactResponse> addContact(@PathVariable String userId, @Valid @RequestBody ContactRequest request) {
+//    public ResponseEntity<ContactResponse> addContact( @RequestBody ContactRequest request) {
 //        ContactResponse response = contactService.addContact(userId, request);
 //        return ResponseEntity.ok(response);
 //    }
 //
 //    @GetMapping("/{userId}")
-//    public ResponseEntity<List<ContactResponse>> getUserContacts(@PathVariable String userId) {
+//    public ResponseEntity<List<ContactResponse>> getUserContacts() {
 //        List<ContactResponse> contacts = contactService.getUserContacts(userId);
 //        return ResponseEntity.ok(contacts);
 //    }
 //
-//    @PostMapping("/{userId}/sync/truecaller")
-//    public ResponseEntity<Void> syncTruecaller(@PathVariable String userId) {
-//        contactService.syncTruecallerContacts(userId);
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    @PostMapping("/{userId}/sync/google")
-//    public ResponseEntity<Void> syncGoogleContacts(@PathVariable String userId) {
-//        contactService.syncGoogleContacts(userId);
-//        return ResponseEntity.ok().build();
-//    }
-//}

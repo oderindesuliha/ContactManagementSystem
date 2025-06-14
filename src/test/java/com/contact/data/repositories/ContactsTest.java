@@ -15,7 +15,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@EnableAutoConfiguration
 public class ContactsTest {
     @Autowired
     private Contacts contactRepository;

@@ -37,7 +37,7 @@ public class ContactServiceImpl implements ContactService {
         }
 
         Contact contact = ContactMapper.mapToContact(contactRequest);
-        contact.setUser(user);
+//        contact.setUser(user);
         contact.setUserId(user.getUserId());
         contact.setDateCreated(LocalDate.now());
         Contact savedContact = contacts.save(contact);
