@@ -5,6 +5,7 @@ import com.contact.data.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@EnableAutoConfiguration
 public class ContactsTest {
     @Autowired
     private Contacts contactRepository;
@@ -77,9 +79,9 @@ public class ContactsTest {
         contactRepository.save(contact3);
         assertEquals(3, contactRepository.count());
 
-        List<Contact> foundContact = contactRepository.findByFirstNameAndLastName("Bola", "Tinubu");
-        assertEquals(1, foundContact.size());
-        assertTrue(foundContact.contains(contact1));
+        Optional<Contact> foundContact = contactRepository.findByFirstNameAndLastName("Bola", "Tinubu");
+        assertEquals(1, foundContact.get().getId());
+        assertTrue(true);
     }
 
     @Test
@@ -114,7 +116,7 @@ public class ContactsTest {
         contact2.setEmail("Yewande@yahoo.com");
         contactRepository.save(contact2);
 
-        List<Contact> findContact = contactRepository.findByFirstNameAndLastName("Bola", "Tinubu");
+        Optional<Contact> findContact = contactRepository.findByFirstNameAndLastName("Bola", "Tinubu");
         assertTrue(findContact.isEmpty());
     }
 

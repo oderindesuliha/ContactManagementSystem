@@ -7,5 +7,4 @@ import java.time.LocalDateTime;
 
 public interface Otps extends MongoRepository<Otp, String> {
     Otp findByPhoneNumber(String phoneNumber);
-    boolean existsByPhoneNumber(String phoneNumber, String otpCode, LocalDateTime now);
 }

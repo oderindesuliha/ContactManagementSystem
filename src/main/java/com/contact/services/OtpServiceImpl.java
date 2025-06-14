@@ -10,7 +10,7 @@ import java.util.Random;
 
 @Service
 public class OtpServiceImpl implements OtpService {
-    private final Otps otps;
+    private  Otps otps;
 
     @Autowired
     public OtpServiceImpl(Otps otps) {
@@ -24,7 +24,7 @@ public class OtpServiceImpl implements OtpService {
         Random random = new Random();
 
         for (int count = 0; count < 6; count++) {
-            otpCode += chars[random.nextInt(6)];
+            otpCode += chars[random.nextInt(10)];
 
         }
 

@@ -14,9 +14,7 @@ public interface Contacts extends MongoRepository<Contact,String> {
 
     List<Contact> findByUser(User user);
 
-    List<Contact> findByFirstNameAndLastName(String firstName, String lastName);
-
     long countContactByDateCreated(LocalDate dateCreated);
 
-    boolean existsByUserId(String userId);
+    Optional<Contact> findByFirstNameAndLastName(String firstName, String lastName);
 }
